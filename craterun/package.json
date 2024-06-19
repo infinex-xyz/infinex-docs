@@ -5,7 +5,7 @@
   "type": "module",
   "main": "index.ts",
   "scripts": {
-    "claim": "tsx ./index.ts",
+    "claim": "tsx ./src/index.ts",
     "test": "vitest --run --bail 1"
   },
   "dependencies": {
