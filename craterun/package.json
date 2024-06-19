@@ -1,0 +1,22 @@
+{
+  "name": "@infinex/scripts",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "main": "index.ts",
+  "scripts": {
+    "claim": "tsx ./index.ts",
+    "test": "vitest --run --bail 1"
+  },
+  "dependencies": {
+    "@types/node": "^20.12.7",
+    "dotenv": "^16.4.5",
+    "ethers": "^6.11.1",
+    "pure-rand": "^6.1.0",
+    "vitest": "^1.6.0"
+  },
+  "devDependencies": {
+    "tsx": "^4.7.2",
+    "typescript": "^5.4.5"
+  }
+}
