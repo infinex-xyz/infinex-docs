@@ -1,5 +1,5 @@
 import { Contract, Interface, JsonRpcProvider } from 'ethers';
-import CrateOpenerAbi from './abi/crateOpenerAbi.json';
+import CrateOpenerAbi from '../abis/crateOpenerAbi.json';
 import dotenv from 'dotenv';
 
 dotenv.config();
