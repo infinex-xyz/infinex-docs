@@ -5,7 +5,7 @@ The Infinex Craterun documentation providers an overview of how crate rewards ar
 The overall flow of a crate opening is as follows:
 1. The user intiates the process by calling the `requestCrateOpening` function on the `CrateOpener` contract.
 2. After the request is submitted, an automated Pyth service will generate a random number, triggering the `RandomNumberProcessed` event on the `CrateOpener` contract.
-3. Then, using the generated `randomNumber` as the seed, a set of psuedo-random numbers will be derived. This set of numbers will be used to draw the crates that the user has won.
+3. Then, using the generated `randomNumber` as the seed, a set of pseudo-random numbers will be derived. This set of numbers will be used to draw the crates that the user has won.
 
 ---
 
