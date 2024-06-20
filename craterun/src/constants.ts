@@ -29,19 +29,19 @@ export const prizeRanges = [
   },
 ];
 
-export const CRATE_OPENER_ADDRESS =
-  '0x0012C0aDDBE5d369be858E0186FdFCA1F1188300';
+export const CRATE_OPENER_ADDRESS = process.env.CRATE_OPENER_ADDRESS || ''
+
 
 export const START_BLOCK_NUMBER = 11465276;
 
-export const baseSepoliaProvider = new JsonRpcProvider(
-  process.env.BASE_SEPOLIA_JSON_RPC || ''
+export const baseProvider = new JsonRpcProvider(
+  process.env.BASE_JSON_RPC || ''
 );
 
 export const crateOpenerContract = new Contract(
   CRATE_OPENER_ADDRESS,
   CrateOpenerAbi,
-  baseSepoliaProvider
+  baseProvider
 );
 
 export const crateOpenerInterface = new Interface(CrateOpenerAbi);
