@@ -1,7 +1,8 @@
 import { prizeRanges } from './constants';
 
-// Index doesn't hold any significance (array will be rearranged as crates are opened)
-// Value is the crates index in the prize ranges above
+/* Generate a sequential array of crateIds, e.g. [0, 1, 2, ... n - 1]
+Index doesn't hold any significance (array will be rearranged as crates are opened)
+Value is the crates index in the prize ranges above */
 export function generateCrateIds() {
   const rewards = [] as number[];
 
