@@ -26,5 +26,6 @@ The result is an array of crate IDs assigned to each address, representing the c
 ## Get started
 1. Install dependencies
 `npm install` 
-2. Run script
+2. Copy `.env.template` into a `.env` file and add a Base JSON RPC url.
+3. Run script
  `npm claim`
