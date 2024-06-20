@@ -32,8 +32,10 @@ export function calculateRewards(
       Number(remainingCrates)
     );
 
-    // Assign prizes to crate holder addresses using the randomly generated indexes
-    rewardsArray[crateHolderAddress] = [...indexes].map((index) => {
+    if (!rewardsArray[crateHolderAddress]) rewardsArray[crateHolderAddress] = [];
+  
+    // Assign crates to crate holder addresses using the randomly generated indexes
+    rewardsArray[crateHolderAddress] = [...rewardsArray[crateHolderAddress], ...[...indexes].map((index) => {
       const crateId = crateIdArray[index];
 
       // Swap-and-pop to replace used crateId (ensure crateId isn't assigned twice)
@@ -41,7 +43,7 @@ export function calculateRewards(
       crateIdArray.pop();
 
       return crateId;
-    });
+    })];
   }
 
   return rewardsArray;
