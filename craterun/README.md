@@ -12,15 +12,15 @@ The overall flow of a crate opening is as follows:
 The script provided in these docs read `RandomNumberProcessed` events on the `CrateOpener` contract to give a complete summary of crate distribution.
 ### How it works
 1. Fetch all `RandomNumberProcessed` events from the `CrateOpener` contract, and iterate through each log sequentially.
-2. For each log, using the randomNumber, generate n amount of crate indexes, where n is the amount of crates the user has requested to open. These indexes are generated using [xoroshiro128+](https://xorshift.di.unimi.it/xoroshiro128plus.c), seeded by the randomNumber. This ensures the generated indexes are deterministic.
-3. The generated indexes are used to obtain crate IDs from an array of sequential numbers (e.g., [0, 1, 2, 3, 4, ..., n]), where n is the total number of crates (5,000,000). We call this array crateIdArray. Each time a crate ID is drawn, it is swapped with the last crateId in crateIdArray and removed from being drawn again.
-4.  Each crate ID corresponds to a position in the prizesArray, which defines the prizes and their associated crate ID ranges. 
+2. For each log, using the `randomNumber`, generate n amount of crate indexes, where n is the amount of crates the user has requested to open. These indexes are generated using [xoroshiro128+](https://xorshift.di.unimi.it/xoroshiro128plus.c), seeded by the `randomNumber`. This ensures the generated indexes are deterministic.
+3. The generated indexes are used to obtain crate IDs from an array of sequential numbers (e.g., `[0, 1, 2, 3, 4, ..., n]`), where `n` is the total number of crates (5,000,000). We call this array `crateIdArray`. Each time a crate ID is drawn, it is swapped with the last crateId in `crateIdArray` and removed from being drawn again.
+4.  Each crate ID corresponds to a position in the `prizesArray`, which defines the prizes and their associated crate ID ranges. 
 For example:
 - Crate IDs 0 to 250,000 hold nothing.
 - Crate IDs 250,000 to 300,000 hold ETH.
 - And so on.
 
-The result is an array of crate IDs assigned to each address, representing the crates they won. The utility function getPrizeInRange maps each crate ID to a specific prize based on the predefined ranges.
+The result is an array of crate IDs assigned to each address, representing the crates they won. The utility function `getPrizeInRange` maps each crate ID to a specific prize based on the predefined ranges.
 
 
 ## Get started
