@@ -1,6 +1,6 @@
 import { prizeRanges } from './constants';
 
-// Index doesn't mean anything
+// Index doesn't hold any significance (array will be rearranged as crates are opened)
 // Value is the crates index in the prize ranges above
 export function generateCrateIds() {
   const rewards = [] as number[];
