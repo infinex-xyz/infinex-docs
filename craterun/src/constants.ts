@@ -29,8 +29,8 @@ export const prizeRanges = [
   },
 ];
 
+// Crate opener contract address
 export const CRATE_OPENER_ADDRESS = process.env.CRATE_OPENER_ADDRESS || ''
-
 
 export const START_BLOCK_NUMBER = 11465276;
 

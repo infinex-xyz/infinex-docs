@@ -1,7 +1,6 @@
 import { EventLog, Log } from 'ethers';
 import prand from 'pure-rand';
 import { crateOpenerInterface } from '../constants';
-import { getPrizeInRange } from '../helpers';
 
 type RewardsArray = {
   [address: `0x${string}`]: number[];
@@ -26,23 +25,25 @@ export function calculateRewards(
       remainingCrates,
     ] = parsedLog.args;
 
+    // Generate n (= crateAmount) amount of psuedo-random numbers between 0 and remainingCrates
     const indexes = generateCrateIndexes(
       randomNumber,
       Number(crateAmount),
       Number(remainingCrates)
     );
 
-    // Assign prizes to crate holder addresses using the randomly generated indexes
-    rewardsArray[crateHolderAddress] = [...indexes].map((index) => {
+    if (!rewardsArray[crateHolderAddress]) rewardsArray[crateHolderAddress] = [];
+  
+    // Assign crates to crate holder addresses using the randomly generated indexes
+    rewardsArray[crateHolderAddress] = [...rewardsArray[crateHolderAddress], ...[...indexes].map((index) => {
       const crateId = crateIdArray[index];
 
       // Swap-and-pop to replace used crateId (ensure crateId isn't assigned twice)
       crateIdArray[index] = crateIdArray[crateIdArray.length - 1];
       crateIdArray.pop();
 
-      // return getPrizeInRange(crateId);
       return crateId;
-    });
+    })];
   }
 
   return rewardsArray;
@@ -58,15 +59,13 @@ export function generateCrateIndexes(
   // https://www.npmjs.com/package/pure-rand
   const rng = prand.xoroshiro128plus(Number(randomNumber));
 
-  const crateIndexes = new Set<number>();
+  const crateIndexes = [] as number[];
   for (let i = 0; i < n; i++) {
-    const index = prand.unsafeUniformIntDistribution(0, remainingCrates, rng);
+    // remainingCrates - 1 - i ensures that the index is within the remaining range
+    // remainingCrates should always be > n (the amount of crates the user wants to open)
+    const index = prand.unsafeUniformIntDistribution(0, remainingCrates - 1 - i, rng);
 
-    if (crateIndexes.has(index)) {
-      i--;
-      continue;
-    }
-    crateIndexes.add(index);
+    crateIndexes.push(index);
   }
 
   return crateIndexes;
