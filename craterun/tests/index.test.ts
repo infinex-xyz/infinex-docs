@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import { main } from '../';
+import { main } from '../src';
 
 describe('Craterun Reward Test', function () {
   test(
