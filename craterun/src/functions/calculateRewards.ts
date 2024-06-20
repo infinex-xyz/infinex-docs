@@ -4,7 +4,7 @@ import { crateOpenerInterface } from '../constants';
 import { getPrizeInRange } from '../helpers';
 
 type RewardsArray = {
-  [address: `0x${string}`]: String[];
+  [address: `0x${string}`]: number[];
 };
 
 // Calculate rewarded crates for each crate holder address
@@ -32,7 +32,7 @@ export function calculateRewards(
       Number(remainingCrates)
     );
 
-    // Assign prizes to crate holder addresses
+    // Assign prizes to crate holder addresses using the randomly generated indexes
     rewardsArray[crateHolderAddress] = [...indexes].map((index) => {
       const crateId = crateIdArray[index];
 
@@ -40,7 +40,8 @@ export function calculateRewards(
       crateIdArray[index] = crateIdArray[crateIdArray.length - 1];
       crateIdArray.pop();
 
-      return getPrizeInRange(crateId);
+      // return getPrizeInRange(crateId);
+      return crateId;
     });
   }
 
@@ -48,7 +49,7 @@ export function calculateRewards(
 }
 
 // Generate n (= crateAmount) amount of psuedo-random numbers between 0 and remainingCrates
-// Psuedo-random numbers are generated with the randomNumber from Pyth as the seed.
+// Psuedo-random numbers are generated with the randomNumber as the seed.
 export function generateCrateIndexes(
   randomNumber: `0x${string}`,
   n: number,
