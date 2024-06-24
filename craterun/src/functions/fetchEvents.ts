@@ -1,11 +1,12 @@
+import { Contract } from 'ethers';
 import { DeferredTopicFilter, EventLog, Log } from 'ethers';
-import { crateOpenerContract } from '../constants';
 
 // Fetch all RandomNumberProcessed events from the CrateOpener contract
 export async function fetchEvents(
   RandomNumberProcessedEvent: DeferredTopicFilter,
   START_BLOCK_NUMBER: number,
-  END_BLOCK_NUMBER: number
+  END_BLOCK_NUMBER: number,
+  crateOpenerContract: Contract
 ) {
   const events = [] as (Log | EventLog)[];
 

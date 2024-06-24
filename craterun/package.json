@@ -1,9 +1,9 @@
 {
-  "name": "@infinex/scripts",
+  "name": "@infinex/craterun-docs",
   "version": "0.0.1",
   "private": false,
   "type": "module",
-  "main": "index.ts",
+  "main": "./src/index.ts",
   "files": [
     "./src/**/*",
     "./abis/**/*"
