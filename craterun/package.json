@@ -1,12 +1,19 @@
 {
   "name": "@infinex/scripts",
-  "version": "0.0.0",
-  "private": true,
+  "version": "0.0.1",
+  "private": false,
   "type": "module",
   "main": "index.ts",
+  "files": [
+    "./src/**/*",
+    "./abis/**/*"
+  ],
   "scripts": {
     "claim": "tsx ./src/index.ts",
     "test": "vitest --run --bail 1"
+  },
+  "entry": {
+    "main": "./src/index.ts" 
   },
   "dependencies": {
     "@types/node": "^20.12.7",
