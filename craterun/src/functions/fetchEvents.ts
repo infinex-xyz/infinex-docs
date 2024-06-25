@@ -14,7 +14,7 @@ export async function fetchEvents(
     const randomNumberProcessedEvents = await crateOpenerContract.queryFilter(
       RandomNumberProcessedEvent,
       i,
-      i + 10000
+      i + 10000 + 1
     );
 
     events.push(...randomNumberProcessedEvents);
