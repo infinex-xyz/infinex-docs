@@ -10,11 +10,11 @@ export async function fetchEvents(
   const events = [] as (Log | EventLog)[];
 
   // rpc can only query 10,000 blocks / 5 hours of logs per call
-  for (let i = START_BLOCK_NUMBER; i < END_BLOCK_NUMBER; i += 10000) {
+  for (let i = START_BLOCK_NUMBER; i < END_BLOCK_NUMBER; i += 10001) {
     const randomNumberProcessedEvents = await crateOpenerContract.queryFilter(
       RandomNumberProcessedEvent,
       i,
-      i + 10000 + 1
+      i + 10000
     );
 
     events.push(...randomNumberProcessedEvents);
