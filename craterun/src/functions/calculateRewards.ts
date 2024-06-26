@@ -19,6 +19,7 @@ export function calculateRewards(
 
     const [
       userRandomBytes,
+      sequenceNumber,
       crateHolderAddress,
       randomNumber,
       crateAmount,

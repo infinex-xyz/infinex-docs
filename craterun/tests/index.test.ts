@@ -1,5 +1,8 @@
 import { describe, expect, test } from "vitest";
 import { main } from "../src";
+import dotenv from 'dotenv'
+
+dotenv.config();
 
 describe("Craterun Reward Test", function () {
   const { BASE_JSON_RPC, CRATE_OPENER_ADDRESS } = process.env;
