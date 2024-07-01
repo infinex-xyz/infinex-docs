@@ -1,10 +1,10 @@
-import { init, START_BLOCK_NUMBER } from "./constants";
+import { CRATE_OPENER_ADDRESS, init, START_BLOCK_NUMBER } from "./constants";
 import { generateCrateIds } from "./helpers";
 import { fetchEvents, calculateRewards } from "./functions";
 
 export async function main({
   baseJsonRpc,
-  crateOpenerAddress = "0x0012C0aDDBE5d369be858E0186FdFCA1F1188300",
+  crateOpenerAddress = CRATE_OPENER_ADDRESS
 }: {
   baseJsonRpc: string;
   crateOpenerAddress: string;
