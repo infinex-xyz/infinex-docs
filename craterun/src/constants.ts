@@ -22,6 +22,7 @@ export function init({
   }
 }
 
+export const TOTAL_NUM_CRATES = 5_000_000;
 export const START_BLOCK_NUMBER = 16382094;
 export const CRATE_OPENER_ADDRESS = '0x543A9ddd8CAEb1eEAdCD0A6641949d6f2ffE796a'
 
@@ -41,13 +42,23 @@ export const prizeRanges = [
   { id: 'pyth_10000', amount: 10 },
   { id: 'eth_32', amount: 1 },
   { id: 'sol_200', amount: 1 },
-  ...Array.from({ length: 69 }).map(
-    (_, i) =>
-      ({
-        id: `community_${i + 1}`,
-        amount: 1,
-      }) as const
-  ),
+  { id: 'jto_2000', amount: 10 },
+  { id: 'nansen_yearly_subscription', amount: 2 },
+  { id: 'steth_3', amount: 5 },
+  { id: 'echo_spots', amount: 20 },
+  { id: 'lil_pudgy', amount: 10 },
+  { id: 'sappy_seal', amount: 2 },
+  { id: 'ezeth_5', amount: 3 },
+  { id: 'blze_14m', amount: 5 },
+  { id: 'btrfly_35', amount: 4 },
+  { id: 'mew_2_6m', amount: 1 },
+  { id: 'mfer_500_000', amount: 1 },
+  { id: 'moutai_500_000', amount: 1 },
+  { id: 'bonk_450m', amount: 1 },
+  { id: 'mog_7bn', amount: 1 },
+  { id: 'mother_150_000', amount: 1 },
+  { id: 'wif_4444', amount: 1 },
+  { id: 'popcat_15000', amount: 1 },
 ] as const;
 
 

@@ -1,6 +1,6 @@
 import { EventLog, Log } from 'ethers';
 import prand from 'pure-rand';
-import { crateOpenerInterface } from '../constants';
+import { TOTAL_NUM_CRATES, crateOpenerInterface } from '../constants';
 
 type RewardsMap = {
   [address: `0x${string}`]: number[];
@@ -17,7 +17,7 @@ export function calculateRewards(
   crateIdArray: number[],
 ): RewardsResult {
   const rewardsMap = {} as RewardsMap;
-  let numRemainingCrates: number | null = null;
+  let numRemainingCrates: number = TOTAL_NUM_CRATES;
 
   for (const log of events) {
     const parsedLog = crateOpenerInterface.parseLog(log);
@@ -55,8 +55,6 @@ export function calculateRewards(
       return crateId;
     })];
   }
-
-  if (!numRemainingCrates) throw new Error("Expected numRemainingCrates to be set");
 
   return { rewardsMap, numRemainingCrates };
 }
