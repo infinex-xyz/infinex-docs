@@ -31,5 +31,7 @@ export function getPrizeInRange(n: number) {
     return false;
   });
 
-  return prize!.name;
+  if (!prize) throw new Error(`Prize not found: ${n}`)
+
+  return prize.id;
 }

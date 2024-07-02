@@ -1,29 +1,39 @@
 import { EventLog, Log } from 'ethers';
 import prand from 'pure-rand';
-import { crateOpenerInterface } from '../constants';
+import { TOTAL_NUM_CRATES, crateOpenerInterface } from '../constants';
 
-type RewardsArray = {
+type RewardsMap = {
   [address: `0x${string}`]: number[];
 };
+
+type RewardsResult = {
+  rewardsMap: RewardsMap
+  numRemainingCrates: number
+}
 
 // Calculate rewarded crates for each crate holder address
 export function calculateRewards(
   events: (Log | EventLog)[],
-  crateIdArray: number[]
-): RewardsArray {
-  const rewardsArray = {} as RewardsArray;
+  crateIdArray: number[],
+): RewardsResult {
+  const rewardsMap = {} as RewardsMap;
+  let numRemainingCrates: number = TOTAL_NUM_CRATES;
 
   for (const log of events) {
     const parsedLog = crateOpenerInterface.parseLog(log);
     if (!parsedLog) throw new Error(`Failed to parse log: ${log}`);
 
     const [
-      userRandomBytes,
+      _userRandomBytes,
+      _sequenceNumber,
       crateHolderAddress,
       randomNumber,
       crateAmount,
       remainingCrates,
     ] = parsedLog.args;
+
+    // Calculate the number of remaining crates _after_ the crate opening event
+    numRemainingCrates = (Number(remainingCrates) - Number(crateAmount))
 
     // Generate n (= crateAmount) amount of psuedo-random numbers between 0 and remainingCrates
     const indexes = generateCrateIndexes(
@@ -32,10 +42,10 @@ export function calculateRewards(
       Number(remainingCrates)
     );
 
-    if (!rewardsArray[crateHolderAddress]) rewardsArray[crateHolderAddress] = [];
-  
+    if (!rewardsMap[crateHolderAddress]) rewardsMap[crateHolderAddress] = [];
+
     // Assign crates to crate holder addresses using the randomly generated indexes
-    rewardsArray[crateHolderAddress] = [...rewardsArray[crateHolderAddress], ...[...indexes].map((index) => {
+    rewardsMap[crateHolderAddress] = [...rewardsMap[crateHolderAddress], ...[...indexes].map((index) => {
       const crateId = crateIdArray[index];
 
       // Swap-and-pop to replace used crateId (ensure crateId isn't assigned twice)
@@ -46,7 +56,7 @@ export function calculateRewards(
     })];
   }
 
-  return rewardsArray;
+  return { rewardsMap, numRemainingCrates };
 }
 
 // Generate n (= crateAmount) amount of psuedo-random numbers between 0 and remainingCrates

@@ -1,12 +1,19 @@
-import {
-  crateOpenerContract,
-  baseProvider,
-  START_BLOCK_NUMBER,
-} from './constants';
-import { generateCrateIds } from './helpers';
-import { fetchEvents, calculateRewards } from './functions';
+import { CRATE_OPENER_ADDRESS, init, START_BLOCK_NUMBER } from "./constants";
+import { generateCrateIds } from "./helpers";
+import { fetchEvents, calculateRewards } from "./functions";
 
-export async function main() {
+export async function main({
+  baseJsonRpc,
+  crateOpenerAddress = CRATE_OPENER_ADDRESS
+}: {
+  baseJsonRpc: string;
+  crateOpenerAddress: string;
+}) {
+  const { baseProvider, crateOpenerContract } = init({
+    baseJsonRpc,
+    crateOpenerAddress,
+  });
+
   const RandomNumberProcessedEvent =
     crateOpenerContract.filters.RandomNumberProcessed();
 
@@ -20,16 +27,10 @@ export async function main() {
   const events = await fetchEvents(
     RandomNumberProcessedEvent,
     START_BLOCK_NUMBER,
-    END_BLOCK_NUMBER
+    END_BLOCK_NUMBER,
+    crateOpenerContract
   );
 
   // Calculate user rewards
   return calculateRewards(events, crateIdArray);
-}
-
-try {
-  const rewards = await main();
-  console.log(rewards);
-} catch (e) {
-  console.error(e);
 }
