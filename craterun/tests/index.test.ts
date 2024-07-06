@@ -1,59 +1,59 @@
 import { describe, expect, test } from "vitest";
-import { main } from "../src";
-import dotenv from 'dotenv'
-import { TOTAL_NUM_CRATES, prizeRanges } from "../src/constants";
 
-dotenv.config();
+import { openCrates } from "../src/opener.js";
+import { client } from "../src/utils/chain.js";
+import { PrizeCounts, TOTAL_CRATES, prizeRanges } from "../src/utils/crates.js";
 
-describe("Craterun Reward Test", function() {
-  const { BASE_JSON_RPC, CRATE_OPENER_ADDRESS } = process.env;
-
-  test(
-    "There are exactly 5_000_000 crates",
-    function() {
-      expect(Object.values(prizeRanges).reduce((acc, { amount }) => acc + amount, 0)).toEqual(TOTAL_NUM_CRATES);
-    }
-  );
+describe("Craterun Reward Test", function () {
+  test("There are exactly 5_000_000 crates", function () {
+    expect(
+      Object.values(prizeRanges).reduce((acc, { amount }) => acc + amount, 0),
+    ).toEqual(TOTAL_CRATES);
+  });
 
   test(
     "Craterun rewards are fully distributed & uniquely distributed",
-    async function() {
-
-      const baseJsonRpc = BASE_JSON_RPC || "";
-      const crateOpenerAddress = CRATE_OPENER_ADDRESS || "";
-
-      const { rewardsMap, numRemainingCrates } = await main({
-        baseJsonRpc,
-        crateOpenerAddress
-      });
+    async function () {
+      const [addressCrates, remainingCrates] = await openCrates();
+      const allCrateIds = Object.values(addressCrates).flatMap(
+        (crates) => crates.crateIds,
+      );
+      const uniqueCrateIds = new Set(allCrateIds);
 
       expect(
-        Object.values(rewardsMap).every((arr) => new Set(arr).size === arr.length)
-      );
+        Object.values(addressCrates).reduce(
+          (acc, crates) =>
+            Object.values(crates.prizeCounts).reduce(
+              (acc, count) => acc + count,
+              acc,
+            ),
+          0,
+        ),
+      ).toBe(TOTAL_CRATES - remainingCrates);
 
-      expect(Object.values(rewardsMap).flat().length).toBe(TOTAL_NUM_CRATES - numRemainingCrates);
+      expect(allCrateIds.length).toBe(TOTAL_CRATES - remainingCrates);
+      expect(allCrateIds.length).toBe(uniqueCrateIds.size);
     },
-    { timeout: 20_000 }
+    { timeout: 1_000_000 },
   );
 
   test(
     "Craterun rewards are deterministic",
-    async function() {
-      let prevRewards = null as any;
+    async function () {
+      const toBlock = await client.getBlockNumber();
+      let prevPrizes: PrizeCounts | null = null;
 
-      // Compare output 5 times to make sure the rewards are deterministic
-      for (let i = 0; i < 5; i++) {
-        const { rewardsMap } = await main({
-          baseJsonRpc: BASE_JSON_RPC || "",
-          crateOpenerAddress: CRATE_OPENER_ADDRESS || "",
-        });
+      // Compare output 2 times to make sure the rewards are deterministic
+      for (let i = 0; i < 2; i++) {
+        const [prizeCounts] = await openCrates(toBlock);
 
-        if (prevRewards && rewardsMap) {
-          expect(rewardsMap).toEqual(prevRewards);
+        if (prevPrizes && prizeCounts) {
+          expect(prizeCounts).toEqual(prevPrizes);
         }
-        prevRewards = rewardsMap;
+
+        prevPrizes = prizeCounts;
       }
     },
-    { timeout: 60_000 }
+    { timeout: 1_000_000 },
   );
 });

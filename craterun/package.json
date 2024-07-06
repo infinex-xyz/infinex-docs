@@ -5,25 +5,26 @@
   "type": "module",
   "main": "./src/index.ts",
   "files": [
-    "./src/**/*",
-    "./abis/**/*"
+    "./src/**/*"
   ],
   "scripts": {
-    "claim": "tsx ./src/index.ts",
+    "open": "tsx ./src/index.ts",
     "test": "vitest --run --bail 1"
   },
   "entry": {
-    "main": "./src/index.ts" 
+    "main": "./src/index.ts"
   },
   "dependencies": {
-    "@types/node": "^20.12.7",
     "dotenv": "^16.4.5",
-    "ethers": "^6.11.1",
     "pure-rand": "^6.1.0",
-    "vitest": "^1.6.0"
+    "viem": "^2.17.1"
   },
   "devDependencies": {
+    "@tsconfig/recommended": "^1.0.7",
+    "@types/node": "^20.14.10",
+    "prettier": "^3.3.2",
     "tsx": "^4.7.2",
-    "typescript": "^5.4.5"
+    "typescript": "^5.4.5",
+    "vitest": "^1.6.0"
   }
 }
