@@ -1,35 +1,16 @@
-import {
-  crateOpenerContract,
-  baseProvider,
-  START_BLOCK_NUMBER,
-} from './constants';
-import { generateCrateIds } from './helpers';
-import { fetchEvents, calculateRewards } from './functions';
+import { openCrates } from "./opener.js";
+import { getAddress } from "viem";
 
-export async function main() {
-  const RandomNumberProcessedEvent =
-    crateOpenerContract.filters.RandomNumberProcessed();
+process.stderr.write("Replaying crate open events...\n");
 
-  // Get current block number
-  const END_BLOCK_NUMBER = await baseProvider.getBlockNumber();
+const [addressPrizes] = await openCrates();
+const accountAddress = process.argv[2] ? getAddress(process.argv[2]) : null;
 
-  // Generate a sequential array of crateIds, e.g. [0, 1, 2, ... n - 1]
-  const crateIdArray = generateCrateIds();
+const result = accountAddress ? addressPrizes[accountAddress] : addressPrizes;
 
-  // Fetch all RandomNumberProcessed events between START_BLOCK_NUMBER and END_BLOCK_NUMBER
-  const events = await fetchEvents(
-    RandomNumberProcessedEvent,
-    START_BLOCK_NUMBER,
-    END_BLOCK_NUMBER
-  );
-
-  // Calculate user rewards
-  return calculateRewards(events, crateIdArray);
+if (!result) {
+  process.stderr.write(`Prizes for address not found: ${accountAddress}\n`);
+  process.exit(1);
 }
 
-try {
-  const rewards = await main();
-  console.log(rewards);
-} catch (e) {
-  console.error(e);
-}
+process.stdout.write(JSON.stringify(result, null, 2));
